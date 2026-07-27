@@ -4,22 +4,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faX } from '@fortawesome/free-solid-svg-icons';
 import './modal.css';
 
-export const AddTaskModal = ({ onClose }) => {
+export const AddTaskModal = ({ onClose, addTask, currStage }) => {
+    const [titleError, setTitleError] = useState("");
+
     const [task, setTask] = useState({
         title: '',
         description: '',
         estimate: '',
         taskLink: '',
         steps: [
-                'Reproduce the issue on the invoice page',
-            'Check browser console for errors',
-            'Identify the root cause in the code',
-            'Fix the printing logic',
-            'Add unit test for the fix',
-            'Verify the fix in staging environment',
-            'Confirm with QA and close the task'
         ], 
-        currStep: ''
+        currStage: currStage
     });
 
     const addNewStep = () => {
@@ -45,6 +40,28 @@ export const AddTaskModal = ({ onClose }) => {
             ...prev,
             [name]: value
         }));
+    }
+
+    const handleAddTask = () => {
+        if (!task.title.trim()) {
+            setTitleError("Title is required.");
+            alert("Title is required.")
+            return;
+        }
+        
+        addTask(task);
+        resetFields();
+    }
+
+    const resetFields = () => {
+        setTask({
+            title: '',
+            description: '',
+            estimate: '',
+            taskLink: '',
+            steps: [], 
+            currStage: currStage
+        });
     }
 
     return (
@@ -200,6 +217,9 @@ export const AddTaskModal = ({ onClose }) => {
                     <button
                         type="button"
                         className="btn-primary"
+                        onClick={() => {
+                            handleAddTask();
+                        }}
                     >
                         Add Task
                     </button>

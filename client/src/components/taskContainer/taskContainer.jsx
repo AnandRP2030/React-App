@@ -4,8 +4,8 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { TaskCard } from "../taskCard/taskCard";
 
 export const TaskContainer = (props) => {
-    const { taskUI, openModal } = props;
-    const { title, description, emptyText, icon, headerIcon, color } = taskUI;
+    const { taskUI, openModal, tasks } = props;
+    const { title, description, emptyText, icon, headerIcon, color, stage } = taskUI;
     const count = 0;
     const isTasksEmpty = false;
 
@@ -32,18 +32,24 @@ export const TaskContainer = (props) => {
                 </div> :
 
                 <div className="task-cards-container">
-                    <TaskCard />
-                    <TaskCard />
-                    <TaskCard />
-                    <TaskCard />
-                    <TaskCard />
+
+                    {
+                        tasks.filter((task) => task.currStage === stage)
+                        .map((task) => (
+                            <TaskCard key={task.id} task={task}/>
+                        ))
+                    }
+                    
                 </div>
             }
 
             <div className="add-task-btn-container">
                 <button className="add-task-btn" style={{
                     color: `rgb(${color})`
-                }} onClick={openModal}>
+                }} onClick={() => {
+
+                    openModal(stage);
+                }}>
                     <FontAwesomeIcon icon={faPlus} />
                     Add Task
                 </button>

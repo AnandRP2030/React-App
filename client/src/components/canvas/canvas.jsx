@@ -15,7 +15,8 @@ const taskUIArray = [
         emptyText: "Tasks you add appear here.",
         icon: faInbox,
         headerIcon: faInbox,
-        color: "var(--todo)"
+        color: "var(--todo)",
+        stage: TASK_STATUS.TODO
     },
     {
         id: 2,
@@ -24,7 +25,8 @@ const taskUIArray = [
         emptyText: "Tasks you add and start will appear here.",
         icon: faListUl,
         headerIcon: faCircleDot,
-        color: "var(--doing)"
+        color: "var(--doing)",
+        stage: TASK_STATUS.DOING
     },
     {
         id: 3,
@@ -33,15 +35,16 @@ const taskUIArray = [
         emptyText: "Tasks you complete will appear here.",
         icon: faCircleCheck,
         headerIcon: faCircleCheck,
-        color: "var(--done)"
+        color: "var(--done)",
+        stage: TASK_STATUS.DONE
     },
 ]
 
-export const Canvas = ({openModal}) => {
+export const Canvas = ({openModal, tasks}) => {
 
     return (
         <div className="canvas">
-            {taskUIArray.map((taskUI) => <TaskContainer openModal={openModal} key={taskUI.id} taskUI={taskUI}/>)}
+            {taskUIArray.map((taskUI) => <TaskContainer tasks={tasks} openModal={openModal} key={taskUI.id} taskUI={taskUI}/>)}
         </div>
     )
 }

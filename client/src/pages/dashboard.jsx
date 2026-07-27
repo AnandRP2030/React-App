@@ -5,10 +5,12 @@ import { SHORTCUTS } from "../constants/shortcuts";
 import { AddTaskModal } from "../components/modal/addTaskModal";
 import "./dashboard.css";
 
+let currStage = "";
+
 export const Dashboard = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    useEffect(() => {
+    const [tasks, setTasks] = useState([]);
+    useEffect(() => { 
 
         // Short keys implementation.
         const handleShortcut = (e) => {
@@ -36,7 +38,15 @@ export const Dashboard = () => {
 
     }, []);
 
-    const openModal = () => setIsModalOpen(true);
+    
+    const addTask = (newTask) => {
+        setTasks((prevTask) => [...prevTask, newTask]);
+    }
+
+    const openModal = (stage) => {
+        currStage = stage;
+        setIsModalOpen(true);
+    };
     
     return (
         <div className="dashboard">
@@ -45,10 +55,10 @@ export const Dashboard = () => {
             </div>
 
             <div className="canvas-container">
-                <Canvas openModal={openModal}/>
+                <Canvas openModal={openModal} tasks={tasks}/>
             </div>
 
-            {isModalOpen && <AddTaskModal onClose={() => setIsModalOpen(false)}/>}
+            {isModalOpen && <AddTaskModal currStage={currStage} onClose={() => setIsModalOpen(false)} addTask={addTask}/>}
         </div>
     )
 }
